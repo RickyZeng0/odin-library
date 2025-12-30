@@ -1,3 +1,6 @@
-p {
-    color: blue;
+.library{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
