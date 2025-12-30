@@ -1,6 +1,52 @@
+:root{
+    --space-x-axis : 60px;
+}
+
+body{
+    margin: 0px;
+}
+
 .library{
+    min-width: 100vw;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    background-color:rgb(240, 238, 241);
+}
+
+.header{
+    background-color: white;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100px;
+    font-size: 40px;
+    font-weight: bold;
+    padding-left: var(--space-x-axis);
+    display: flex;
+    align-items: center;
+}
+
+.content{
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0px 0px auto 0px;
+    padding: 20px var(--space-x-axis);
+}
+
+table,td,tr{
+    border: 1px solid black;
+}
+
+table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th{
+    text-align: center;
+}
+
+.footer{
+   margin-bottom: 20px;
 }
