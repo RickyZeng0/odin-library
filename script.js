@@ -11,6 +11,7 @@ function Book(title, author, page, read) {
     this.read = read;
     //window.crypto.randomUUID() , globalThis.crypto.randomUUID(), or crypto.randomUUID()
     this.id = globalThis.crypto.randomUUID();
+    //we need this variable because we may call the displayAllBook many times !
     this.display = false;
 }
 
@@ -23,8 +24,13 @@ function displayAllBook() {
     //for in get the key of object, here the key of myLibrary is the index
     //to get the object which is the value of the array, we need for of
     for (let book of myLibrary) {
-        if(book.display) return;
+        //should use continue here
+        if(book.display) continue;
+        console.log("now it is true");
+        book.display = true;
         const tr = document.createElement("tr");
+        //so we can locate and delete the entire row
+        tr.setAttribute("data-id",book.id);
         let counter = 0;
         for (let property in book) {
             if(Object.hasOwn(book, property) && counter < 3) {
@@ -35,20 +41,43 @@ function displayAllBook() {
                 counter++;
             }
             if(property == "read"){
+                //create button and then add event
                 const button = document.createElement("button");
-                if(book.property) button.textContent = "read";
-                else button.textContent = "not read";
-                tr.appendChild(button); 
+                if(book.property) button.textContent = "Read";
+                else button.textContent = "Not Read";
                 button.addEventListener("click", ()=> {
-                    if(button.textContent == "read") button.textContent = "not read";
-                    else button.textContent = "read";
+                    if(button.textContent == "Read") button.textContent = "Not Read";
+                    else button.textContent = "Read";
                 });
+
+                const delButton = document.createElement("button");
+                delButton.textContent = "Delete";
+                //tr and button both need the same id to match up
+                delButton.setAttribute("data-id",book.id);
+                delButton.addEventListener("click", ()=>{
+                    //delete it from the DOM tree
+                    let id = delButton.getAttribute("data-id");
+                    //the css attribute selector need ""
+                    const deletedRow = document.querySelector(`tr[data-id="${id}"]`);
+                    table.removeChild(deletedRow);
+                    //and also delete it from the array
+                    const deletedIndex = myLibrary.findIndex( (current) => current.id == id );
+                    myLibrary.splice(deletedIndex,1);
+                });
+
+                //insert it to the table
+                const div = document.createElement("div");
+                div.appendChild(button);
+                div.appendChild(delButton);
+                tr.appendChild(div); 
             }
         }
         table.appendChild(tr);
     }
 }
-
 addBookToLibrary("Blacksoul", "Sushi", 200, true);
 addBookToLibrary("Blacksoul2", "Sushi", 400, false);
+//the tools in chrome show the update version, so the first and second log looks the same!
+console.log(myLibrary);
 displayAllBook();
+console.log(myLibrary);
