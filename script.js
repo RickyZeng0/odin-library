@@ -11,6 +11,7 @@ function Book(title, author, page, read) {
     this.read = read;
     //window.crypto.randomUUID() , globalThis.crypto.randomUUID(), or crypto.randomUUID()
     this.id = globalThis.crypto.randomUUID();
+    this.display = false;
 }
 
 function addBookToLibrary(title, author, page, read) {
@@ -22,24 +23,32 @@ function displayAllBook() {
     //for in get the key of object, here the key of myLibrary is the index
     //to get the object which is the value of the array, we need for of
     for (let book of myLibrary) {
-        console.log(book);
+        if(book.display) return;
         const tr = document.createElement("tr");
         let counter = 0;
         for (let property in book) {
-            if (Object.hasOwn(book, property) && counter < 4) {
+            if(Object.hasOwn(book, property) && counter < 3) {
                 const td = document.createElement("td");
                 //property here is variable, use dot then it will return undefined!
                 td.textContent = book[property];
                 tr.appendChild(td);
                 counter++;
             }
+            if(property == "read"){
+                const button = document.createElement("button");
+                if(book.property) button.textContent = "read";
+                else button.textContent = "not read";
+                tr.appendChild(button); 
+                button.addEventListener("click", ()=> {
+                    if(button.textContent == "read") button.textContent = "not read";
+                    else button.textContent = "read";
+                });
+            }
         }
-        console.log("enter table");
-        console.log(book);
         table.appendChild(tr);
-        book.display = true;
     }
 }
+
 addBookToLibrary("Blacksoul", "Sushi", 200, true);
 addBookToLibrary("Blacksoul2", "Sushi", 400, false);
 displayAllBook();
