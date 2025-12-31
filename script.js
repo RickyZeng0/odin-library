@@ -54,6 +54,7 @@ function displayBook(book) {
             button.addEventListener("click", () => {
                 if (button.textContent == "Read") button.textContent = "Not Read";
                 else button.textContent = "Read";
+                button.classList.toggle("read");
             });
 
             const delButton = document.createElement("button");
