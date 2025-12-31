@@ -49,7 +49,11 @@ function displayBook(book) {
         if (property == "read") {
             //create button and then add event
             const button = document.createElement("button");
-            if (book.property) button.textContent = "Read";
+            //remember to set the class, also it should be book[property] or book.read because property is an variable!
+            if (book.read) {
+                button.textContent = "Read";
+                button.classList.add("read");
+            }
             else button.textContent = "Not Read";
             button.addEventListener("click", () => {
                 if (button.textContent == "Read") button.textContent = "Not Read";
