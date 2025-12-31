@@ -1,5 +1,6 @@
 const myLibrary = [];
 const table = document.querySelector("table");
+const form = document.querySelector("form");
 
 function Book(title, author, page, read) {
     if (!new.target) {
@@ -25,56 +26,65 @@ function displayAllBook() {
     //to get the object which is the value of the array, we need for of
     for (let book of myLibrary) {
         //should use continue here
-        if(book.display) continue;
-        console.log("now it is true");
-        book.display = true;
-        const tr = document.createElement("tr");
-        //so we can locate and delete the entire row
-        tr.setAttribute("data-id",book.id);
-        let counter = 0;
-        for (let property in book) {
-            if(Object.hasOwn(book, property) && counter < 3) {
-                const td = document.createElement("td");
-                //property here is variable, use dot then it will return undefined!
-                td.textContent = book[property];
-                tr.appendChild(td);
-                counter++;
-            }
-            if(property == "read"){
-                //create button and then add event
-                const button = document.createElement("button");
-                if(book.property) button.textContent = "Read";
-                else button.textContent = "Not Read";
-                button.addEventListener("click", ()=> {
-                    if(button.textContent == "Read") button.textContent = "Not Read";
-                    else button.textContent = "Read";
-                });
-
-                const delButton = document.createElement("button");
-                delButton.textContent = "Delete";
-                //tr and button both need the same id to match up
-                delButton.setAttribute("data-id",book.id);
-                delButton.addEventListener("click", ()=>{
-                    //delete it from the DOM tree
-                    let id = delButton.getAttribute("data-id");
-                    //the css attribute selector need ""
-                    const deletedRow = document.querySelector(`tr[data-id="${id}"]`);
-                    table.removeChild(deletedRow);
-                    //and also delete it from the array
-                    const deletedIndex = myLibrary.findIndex( (current) => current.id == id );
-                    myLibrary.splice(deletedIndex,1);
-                });
-
-                //insert it to the table
-                const div = document.createElement("div");
-                div.appendChild(button);
-                div.appendChild(delButton);
-                tr.appendChild(div); 
-            }
-        }
-        table.appendChild(tr);
+        if (book.display) continue;
+        displayBook(book);
     }
 }
+
+function displayBook(book) {
+    book.display = true;
+    const tr = document.createElement("tr");
+    //so we can locate and delete the entire row
+    tr.setAttribute("data-id", book.id);
+    let counter = 0;
+    for (let property in book) {
+        if (Object.hasOwn(book, property) && counter < 3) {
+            const td = document.createElement("td");
+            //property here is variable, use dot then it will return undefined!
+            td.textContent = book[property];
+            tr.appendChild(td);
+            counter++;
+        }
+        if (property == "read") {
+            //create button and then add event
+            const button = document.createElement("button");
+            if (book.property) button.textContent = "Read";
+            else button.textContent = "Not Read";
+            button.addEventListener("click", () => {
+                if (button.textContent == "Read") button.textContent = "Not Read";
+                else button.textContent = "Read";
+            });
+
+            const delButton = document.createElement("button");
+            delButton.textContent = "Delete";
+            //tr and button both need the same id to match up
+            delButton.setAttribute("data-id", book.id);
+            delButton.addEventListener("click", () => {
+                //delete it from the DOM tree
+                let id = delButton.getAttribute("data-id");
+                //the css attribute selector need ""
+                const deletedRow = document.querySelector(`tr[data-id="${id}"]`);
+                table.removeChild(deletedRow);
+                //and also delete it from the array
+                const deletedIndex = myLibrary.findIndex((current) => current.id == id);
+                myLibrary.splice(deletedIndex, 1);
+            });
+
+            //insert it to the table
+            const div = document.createElement("div");
+            div.appendChild(button);
+            div.appendChild(delButton);
+            tr.appendChild(div);
+        }
+    }
+    table.appendChild(tr);
+}
+
+
+form.addEventListener("submit", (event) => {
+    event.preventDefault();
+});
+
 addBookToLibrary("Blacksoul", "Sushi", 200, true);
 addBookToLibrary("Blacksoul2", "Sushi", 400, false);
 //the tools in chrome show the update version, so the first and second log looks the same!
