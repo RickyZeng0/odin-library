@@ -24,6 +24,7 @@ function addBookToLibrary(title, author, page, read) {
 function displayAllBook() {
     //for in get the key of object, here the key of myLibrary is the index
     //to get the object which is the value of the array, we need for of
+    //Difference Between Iterable and Enumerable Properties
     for (let book of myLibrary) {
         //should use continue here
         if (book.display) continue;
@@ -82,7 +83,17 @@ function displayBook(book) {
 
 
 form.addEventListener("submit", (event) => {
+    //we need this line, otherwise ,the website will refresh
     event.preventDefault();
+    const formData = new FormData(form);
+    const title = formData.get("title");
+    const author = formData.get("author");
+    const pages = formData.get("pages");
+    const read = formData.get("read") == null ? false : true;
+    addBookToLibrary(title,author,pages,read);
+    displayAllBook();
+    //reset the whole form, it is only for form but not form control
+    form.reset();
 });
 
 addBookToLibrary("Blacksoul", "Sushi", 200, true);
